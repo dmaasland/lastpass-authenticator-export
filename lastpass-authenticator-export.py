@@ -12,6 +12,7 @@ import argparse
 import getpass
 
 from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 
 VERIFY = True
 
@@ -102,7 +103,10 @@ def decrypt_user_data(user_data, key):
     ciphertext = base64.b64decode(data_parts[1])
 
     cipher = AES.new(key, AES.MODE_CBC, iv=iv)
-    plaintext = cipher.decrypt(ciphertext)
+    plaintext = unpad(
+        cipher.decrypt(ciphertext),
+        AES.block_size
+    )
     mfa_data = json.loads(plaintext)
     
     return mfa_data
