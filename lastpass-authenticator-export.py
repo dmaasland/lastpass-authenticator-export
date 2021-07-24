@@ -29,7 +29,11 @@ def iterations(username):
         verify = VERIFY
     )
 
-    iterations = int(r.text)
+    try:
+        iterations = int(r.text)
+    except ValueError:
+        iterations = 5000
+        
     return iterations
 
 
