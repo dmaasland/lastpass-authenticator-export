@@ -15,6 +15,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 
 VERIFY = True
+USER_AGENT = 'lastpass-python/{}'.format('0.3.2')
 
 def iterations(username):
 
@@ -22,11 +23,15 @@ def iterations(username):
     params = {
         'email': username
     }
+    headers = {
+        'user-agent': USER_AGENT
+    }
 
     r = requests.get(
         url = url,
         params = params,
-        verify = VERIFY
+        verify = VERIFY,
+        headers = headers
     )
 
     try:
@@ -51,6 +56,7 @@ def create_hash(username, password, iteration_count):
 def login(username, password, otp=None):
 
     session = requests.Session()
+    session.headers = {'user-agent': USER_AGENT}
     url = 'https://lastpass.com/login.php'
     iteration_count = iterations(username)
     key, login_hash = create_hash(username, password, iteration_count)
@@ -82,13 +88,15 @@ def login(username, password, otp=None):
         return r.cookies.get_dict()['PHPSESSID'], csrf, key
 
 
+
 def get_mfa_backup(session, csrf):
 
     url = 'https://lastpass.com/lmiapi/authenticator/backup'
 
     headers = {
         'X-CSRF-TOKEN': csrf,
-        'X-SESSION-ID': session
+        'X-SESSION-ID': session,
+        'user-agent': USER_AGENT
     }
 
     r = requests.get(
