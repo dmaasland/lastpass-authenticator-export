@@ -16,6 +16,7 @@ from Crypto.Util.Padding import unpad
 
 VERIFY = True
 USER_AGENT = 'lastpass-python/{}'.format('0.3.2')
+CLIENT_ID = 'LastPassAuthExport'
 
 def iterations(username):
 
@@ -68,6 +69,7 @@ def login(username, password, otp=None):
         'username': username,
         'hash': login_hash,
         'iterations': iteration_count,
+        'imei': CLIENT_ID
     }
 
     if otp:
