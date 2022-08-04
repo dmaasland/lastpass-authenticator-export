@@ -2,8 +2,8 @@
 Based on the original author's investigation at `https://blog.unauthorizedaccess.nl/2021/03/07/export-totps-from-lastpass-authenticator.html`
 
 ## Compatible (don't know minimums)
-python 3.10
-pip 22.2.2
+ - python 3.10
+ - pip 22.2.2
 
 ## Steps
 1. Place the script somewhere on a filesystem that is *not* backed up (for example: avoid google drive or apple time machine protected drives)
