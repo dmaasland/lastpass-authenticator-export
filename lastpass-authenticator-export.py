@@ -134,12 +134,29 @@ def write_out(mfa_data):
     with open('export/export.json', 'w') as f:
         f.write(json.dumps(mfa_data))
 
-    table = "<table>\n"
-    table += "  <tr>\n"
-    table += "    <th>Issuer</th>\n"
-    table += "    <th>Account</th>\n"
-    table += "    <th>QR</th>\n"
-    table += "  </tr>\n"
+    table = """
+<html>
+  <head>
+    <style>
+      table, th {
+        border: 1px solid black;
+      }
+      td {
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Issuer</th>
+        <th>Account</th>
+        <th>Secret</th>
+        <th>QR</th>
+      </tr>
+"""
 
 
     for account in mfa_data['accounts']:
@@ -156,10 +173,15 @@ def write_out(mfa_data):
         table += "  <tr>\n"
         table += f"    <td>{account['issuerName']}</td>\n"
         table += f"    <td>{account['userName']}</td>\n"
+        table += f"    <td>{account['secret']}</td>\n"
         table += f"    <td><img src='{account['accountID']}.png' width='200' height='200'></td>\n"
         table += f"  </tr>\n"
 
-    table += "</table>"
+    table += """
+    </table>
+  </body>
+</html>
+"""
 
     with open('export/export.html', 'w') as f:
         f.write(table)
