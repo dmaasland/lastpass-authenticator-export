@@ -168,13 +168,17 @@ def write_out(mfa_data):
         )
 
         img = qrcode.make(uri)
-        img.save(f'export/{account["accountID"]}.png')
+        if not account["accountID"]:
+            img_name = os.urandom(10).hex()
+        else:
+            img_name = account["accountID"]
+        img.save(f'export/{img_name}.png')
 
         table += "  <tr>\n"
         table += f"    <td>{account['issuerName']}</td>\n"
         table += f"    <td>{account['userName']}</td>\n"
         table += f"    <td>{account['secret']}</td>\n"
-        table += f"    <td><img src='{account['accountID']}.png' width='200' height='200'></td>\n"
+        table += f"    <td><img src='{img_name}.png' width='200' height='200'></td>\n"
         table += f"  </tr>\n"
 
     table += """
